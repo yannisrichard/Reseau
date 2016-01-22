@@ -44,24 +44,30 @@ public class ThreadOperation implements Runnable {
 		int resultat = 0;
         out.println("Client " + clientNumber);
         try {
-            while(!(ligne = client.readLine()).equals("Fin")) { //NullPointer mettre un wait de l'autre côté 
-            	String[] splitArray = ligne.split(" : ");
-                switch (splitArray[0]) {
-				case "Consonne":
-					resultat = consonne(splitArray[1]);
-	                out.println(resultat);	
-					break;
-				case "Voyelle":
-					resultat = voyelle(splitArray[1]);
-	                out.println(resultat);
-					break;
-				default:
-					System.out.println("Mauvaise Commande");
-					break;
-				}
-                resultat = 0;
-                ligne = null;
-            }
+        	if(client!=null){
+	            while((ligne = client.readLine()) != null) { 
+	            	if(!(ligne.equals("Fin"))){
+		            	String[] splitArray = ligne.split(" : ");
+		                switch (splitArray[0]) {
+						case "Consonne":
+							resultat = consonne(splitArray[1]);
+			                out.println(resultat);	
+							break;
+						case "Voyelle":
+							resultat = voyelle(splitArray[1]);
+			                out.println(resultat);
+							break;
+						default:
+							System.out.println("Mauvaise Commande");
+							break;
+						}
+		                resultat = 0;
+		                ligne = null;
+	            	}
+	            }
+        	}
+        	
+            
         }
         catch (IOException e) {
             e.printStackTrace();
