@@ -1,0 +1,24 @@
+1ere étape : Création clé :
+$keytool - genkey -alias x -keystore y -keyobj RSA
+2eme étape : Réparation par la certification :
+$keytool -export -alias x -keystore x
+3eme étape : Autosigner
+$keytool -import -alias z -file z.cer -keystore b
+
+Note : 
+x, y, z, b représente le nom des alias
+y est le keystore. Dans le server.
+b est le truststore client/publique. Faire un FTP pour récupérer le certificat b.
+
+Lorque l'on lance un programme on peut intégrer le keystore, et trustore dans le programme :
+Server :
+java -Djavax.net.url.keystore=y -Djavax.net.ssl.keyStorePassword= Lepassworddonné nom.programme
+Client :
+java -Djavax.net.url.truststore=b -Djavax.net.ssl.trustStorePassword= Lepassworddonné nom.programme
+
+Comment repurer nom.programme :
+Aller dans worskpace/nomprojet/bin/
+Taper la commande java : nomdupackage/Server tester avant avec bin directement sinon probleme vient du package
+
+
+=> http://stilius.net/java/java_ssl.php

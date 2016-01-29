@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import constant.Constants;
 
@@ -84,12 +86,11 @@ public class Client {
 	 */
 	private void caractere(String ligne, StringBuilder builder) 
 	{
-		String[] splitLine = ligne.split(":");
+		String[] splitLine = ligne.split(" : ");
 		if (2 == splitLine.length) {
 			String result = httpGet(splitLine[1]);
 			if (null != result) {
 				builder.append(ligne).append("=").append(result).append("\n");
-			    System.out.println(builder.toString());
 			}
         }
         else {
@@ -106,12 +107,11 @@ public class Client {
 	 */
 	private void valeur(String ligne, StringBuilder builder) 
 	{
-		String[] splitLine = ligne.split(":");
+		String[] splitLine = ligne.split(" : ");
 		if (2 == splitLine.length) {
 			String result = httpPost(splitLine[1]);
 			if (null != result) {
 				builder.append(ligne).append("=").append(result).append("\n");
-			    System.out.println(builder.toString());
 			}
         }
         else {
@@ -130,10 +130,23 @@ public class Client {
 			PrintStream out = new PrintStream(socweb.getOutputStream());
 			StringBuilder builder = new StringBuilder();
 			// Dossier du projet web
-			String folder = "/ServerPhp/";
-			builder.append("GET ").append(folder).append("index.php?phrase=").append(phrase)
+			//Changer folder pour Wamp et rajouter le append apres le .append("GET")
+//			String folder = "/ServerPhp/";
+			builder.append("GET ").append("/~yarichard1/index.php?phrase=").append(phrase)
 				   .append(" HTTP/1.1\r\nHost:").append(Constants.ADDR_SERVER_PHP).append("\r\n\r\n");
 			out.println(builder.toString());
+			System.out.println(builder.toString());
+
+	        String line;
+			while ((line = keyboard.readLine()) != null) {
+				//Expresssion reguliere pour recuperer sans l'en-tête
+				Pattern twopart = Pattern.compile("(.*)=>(.*)");
+			    Matcher m = twopart.matcher(line);
+			    if (m.matches()) {
+			    	System.out.println(m.group(2)+"\n\r");
+			    } 
+	        }
+			
 		} 
 		catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -153,11 +166,18 @@ public class Client {
 			PrintStream out = new PrintStream(socweb.getOutputStream());
 			StringBuilder builder = new StringBuilder();
 			// Dossier du projet web
-			String folder = "/ServerPhp/";
-			builder.append("POST ").append(folder).append("index.php HTTP/1.1\r\nHost:").append(Constants.ADDR_SERVER_PHP).append("\r\n")
-					.append("Content-type: application/x-www-form-urlencoded\r\nContent-Length: 33\r\n\r\nfphrase=")
-				   .append(phrase);
+			builder.append("POST ").append("/~yarichard/index.php HTTP/1.1\r\n")
+			.append(Constants.ADDR_SERVER_PHP).append("\r\n")
+			.append("Content-Type: application/x-www-form-urlencoded")
+			.append("Content-Lenght="+phrase.length() + "\r\n")
+		    .append(phrase);
+						
+
 			out.println(builder.toString());
+			String line;
+			while ((line = keyboard.readLine()) != null) {
+				System.out.print(line + "\r\n");
+		    }
 		} 
 		catch (UnknownHostException e) {
 			e.printStackTrace();
