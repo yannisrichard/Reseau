@@ -130,23 +130,22 @@ public class Client {
 			PrintStream out = new PrintStream(socweb.getOutputStream());
 			StringBuilder builder = new StringBuilder();
 			// Dossier du projet web
-			//Changer folder pour Wamp et rajouter le append apres le .append("GET")
-//			String folder = "/ServerPhp/";
-			builder.append("GET ").append("/~yarichard1/index.php?phrase=").append(phrase)
+			//String folder = "/~yarichard/"; //IUT 
+			String folder = "/ServerPhp/"; // Wamp
+			builder.append("GET ").append(folder).append("index.php?phrase=").append(phrase)
 				   .append(" HTTP/1.1\r\nHost:").append(Constants.ADDR_SERVER_PHP).append("\r\n\r\n");
 			out.println(builder.toString());
-			System.out.println(builder.toString());
-
-	        String line;
-			while ((line = keyboard.readLine()) != null) {
-				//Expresssion reguliere pour recuperer sans l'en-tête
-				Pattern twopart = Pattern.compile("(.*)=>(.*)");
-			    Matcher m = twopart.matcher(line);
-			    if (m.matches()) {
-			    	System.out.println(m.group(2)+"\n\r");
-			    } 
-	        }
 			
+			// On retire le header
+	        String line;
+			do {
+				line = keyboard.readLine();
+				if (line != null && line.length() == 0) {
+					line = keyboard.readLine().toString();
+					break;
+				}
+			} while (line != null);
+			System.out.println(line);	
 		} 
 		catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -166,18 +165,29 @@ public class Client {
 			PrintStream out = new PrintStream(socweb.getOutputStream());
 			StringBuilder builder = new StringBuilder();
 			// Dossier du projet web
-			builder.append("POST ").append("/~yarichard/index.php HTTP/1.1\r\n")
-			.append(Constants.ADDR_SERVER_PHP).append("\r\n")
-			.append("Content-Type: application/x-www-form-urlencoded")
-			.append("Content-Lenght="+phrase.length() + "\r\n")
-		    .append(phrase);
-						
-
+			//String folder = "/~yarichard/index.php HTTP/1.1\n"; //IUT 
+			String folder = "/ServerPhp/index.php HTTP/1.1\n";
+			builder.append("POST ").append(folder)
+			.append("accept : text/text\n")
+			.append("Host :")
+			.append(Constants.ADDR_SERVER_PHP)
+			.append("\n")
+			.append("Content-type : application/x-www-form-urlencoded\n")
+			.append("Content-Lenght : "+phrase.length() + "\n")
+		    .append("phrase=")
+			.append(phrase);
 			out.println(builder.toString());
-			String line;
-			while ((line = keyboard.readLine()) != null) {
-				System.out.print(line + "\r\n");
-		    }
+
+			// On retire le header
+	        String line;
+			do {
+				line = keyboard.readLine();
+				if (line != null && line.length() == 0) {
+					line = keyboard.readLine().toString();
+					break;
+				}
+			} while (line != null);
+			System.out.println(line);	
 		} 
 		catch (UnknownHostException e) {
 			e.printStackTrace();
