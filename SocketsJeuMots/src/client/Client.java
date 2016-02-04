@@ -90,7 +90,7 @@ public class Client {
 		if (2 == splitLine.length) {
 			String result = httpGet(splitLine[1]);
 			if (null != result) {
-				builder.append(ligne).append("=").append(result).append("\n");
+				builder.append(splitLine[1]).append("=").append(result).append("\n");
 			}
         }
         else {
@@ -111,7 +111,7 @@ public class Client {
 		if (2 == splitLine.length) {
 			String result = httpPost(splitLine[1]);
 			if (null != result) {
-				builder.append(ligne).append("=").append(result).append("\n");
+				builder.append(splitLine[1]).append("=").append(result).append("\n");
 			}
         }
         else {
@@ -123,6 +123,7 @@ public class Client {
 
 	private String httpGet(String phrase)
 	{
+        String line = null;
 		try {
 			@SuppressWarnings("resource")
 			Socket socweb = new Socket(Constants.ADDR_SERVER_PHP, 80);
@@ -137,7 +138,6 @@ public class Client {
 			out.println(builder.toString());
 			
 			// On retire le header
-	        String line;
 			do {
 				line = keyboard.readLine();
 				if (line != null && line.length() == 0) {
@@ -145,7 +145,6 @@ public class Client {
 					break;
 				}
 			} while (line != null);
-			System.out.println(line);	
 		} 
 		catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -153,11 +152,12 @@ public class Client {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return line;
 	}
 	
 	private String httpPost(String phrase)
 	{
+        String line = null;
 		try {
 			@SuppressWarnings("resource")
 			Socket socweb = new Socket(Constants.ADDR_SERVER_PHP, 80);
@@ -166,28 +166,26 @@ public class Client {
 			StringBuilder builder = new StringBuilder();
 			// Dossier du projet web
 			//String folder = "/~yarichard/index.php HTTP/1.1\n"; //IUT 
-			String folder = "/ServerPhp/index.php HTTP/1.1\n";
+			String folder = "/ServerPhp/index.php HTTP/1.1\r\n";
 			builder.append("POST ").append(folder)
-			.append("accept : text/text\n")
+//			.append("accept : text/text\n")
 			.append("Host :")
 			.append(Constants.ADDR_SERVER_PHP)
-			.append("\n")
-			.append("Content-type : application/x-www-form-urlencoded\n")
-			.append("Content-Lenght : "+phrase.length() + "\n")
+			.append("\r\n")
+			.append("Content-type : application/x-www-form-urlencoded\r\n")
+			.append("Content-Length : "+33 + "\r\n\r\n")
 		    .append("phrase=")
-			.append(phrase);
+			.append(phrase+"\r\n");
 			out.println(builder.toString());
 
 			// On retire le header
-	        String line;
 			do {
-				line = keyboard.readLine();
+				line = keyboard.readLine().toString();
 				if (line != null && line.length() == 0) {
 					line = keyboard.readLine().toString();
 					break;
 				}
 			} while (line != null);
-			System.out.println(line);	
 		} 
 		catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -195,7 +193,7 @@ public class Client {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return line;
 	}
 
 }
