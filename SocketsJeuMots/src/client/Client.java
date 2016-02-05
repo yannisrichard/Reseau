@@ -88,7 +88,7 @@ public class Client {
 	{
 		String[] splitLine = ligne.split(" : ");
 		if (2 == splitLine.length) {
-			String result = httpGet(splitLine[1]);
+			String result = httpGet(splitLine[1].replaceAll("\\s", ""));
 			if (null != result) {
 				builder.append(splitLine[1]).append("=").append(result).append("\n");
 			}
@@ -131,20 +131,21 @@ public class Client {
 			PrintStream out = new PrintStream(socweb.getOutputStream());
 			StringBuilder builder = new StringBuilder();
 			// Dossier du projet web
-			//String folder = "/~yarichard/"; //IUT 
-			String folder = "/ServerPhp/"; // Wamp
+			String folder = "/~yarichard1/"; //IUT 
+			//String folder = "/ServerPhp/"; // Wamp
 			builder.append("GET ").append(folder).append("index.php?phrase=").append(phrase)
 				   .append(" HTTP/1.1\r\nHost:").append(Constants.ADDR_SERVER_PHP).append("\r\n\r\n");
 			out.println(builder.toString());
 			
 			// On retire le header
 			do {
-				line = keyboard.readLine();
+				line = keyboard.readLine().toString();
 				if (line != null && line.length() == 0) {
 					line = keyboard.readLine().toString();
 					break;
 				}
 			} while (line != null);
+			
 		} 
 		catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -165,8 +166,8 @@ public class Client {
 			PrintStream out = new PrintStream(socweb.getOutputStream());
 			StringBuilder builder = new StringBuilder();
 			// Dossier du projet web
-			//String folder = "/~yarichard/index.php HTTP/1.1\n"; //IUT 
-			String folder = "/ServerPhp/index.php HTTP/1.1\r\n";
+			String folder = "/~yarichard1/index.php HTTP/1.1\r\n"; //IUT 
+			//String folder = "/ServerPhp/index.php HTTP/1.1\r\n";
 			builder.append("POST ").append(folder)
 //			.append("accept : text/text\n")
 			.append("Host :")
