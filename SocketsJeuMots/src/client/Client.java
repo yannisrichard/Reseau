@@ -41,7 +41,7 @@ public class Client {
 		    
 		    System.out.println(keyboardSoc.readLine());
 	        System.out.println("*********** En attente d'une opération **************");
-		    System.out.println("Commande -> Voyelle, Consonne, Caractere, Valeur, Fin");
+		    System.out.println("Commande -> Voyelle, Consonne, Caractere, Valeur, VoyelleSSL, ConsonneSSL Fin");
 		    System.out.println("Exemple  -> Voyelle : votre texte");
 		    System.out.println("\nCommande : ");
 		    
@@ -54,6 +54,34 @@ public class Client {
 					builder.append(ligne).append("=").append(result).append("\n");
 				    builder.append("Autre operation :");
 				    System.out.println(builder.toString());
+		    	}
+		    	if (ligne.contains("ConsonneSSL :") || ligne.contains("VoyelleSSL :")) {
+		            /*
+		    		SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+		            SSLSocket sslsocket = (SSLSocket) sslsocketfactory.createSocket("localhost", 9999);
+
+		            InputStream inputstream = System.in;
+		            InputStreamReader inputstreamreader = new InputStreamReader(inputstream);
+		            BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
+
+		            OutputStream outputstream = sslsocket.getOutputStream();
+		            OutputStreamWriter outputstreamwriter = new OutputStreamWriter(outputstream);
+		            BufferedWriter bufferedwriter = new BufferedWriter(outputstreamwriter);
+
+		            String string = null;
+		            while ((string = bufferedreader.readLine()) != null) {
+		                bufferedwriter.write(string + '\n');
+		                bufferedwriter.flush();
+		            }
+
+		    		
+		    		
+		    		out.println(ligne);
+				    result = keyboardSoc.readLine();
+					builder.append(ligne).append("=").append(result).append("\n");
+				    builder.append("Autre operation :");
+				    System.out.println(builder.toString());
+				    */
 		    	}
 		    	else {
 		    		if (ligne.contains("Caractere :")) {
@@ -131,8 +159,8 @@ public class Client {
 			PrintStream out = new PrintStream(socweb.getOutputStream());
 			StringBuilder builder = new StringBuilder();
 			// Dossier du projet web
-			String folder = "/~yarichard1/"; //IUT 
-			//String folder = "/ServerPhp/"; // Wamp
+			//String folder = "/~yarichard1/"; //IUT 
+			String folder = "/ServerPhp/"; // Wamp
 			builder.append("GET ").append(folder).append("index.php?phrase=").append(phrase)
 				   .append(" HTTP/1.1\r\nHost:").append(Constants.ADDR_SERVER_PHP).append("\r\n\r\n");
 			out.println(builder.toString());
@@ -166,10 +194,9 @@ public class Client {
 			PrintStream out = new PrintStream(socweb.getOutputStream());
 			StringBuilder builder = new StringBuilder();
 			// Dossier du projet web
-			String folder = "/~yarichard1/index.php HTTP/1.1\r\n"; //IUT 
-			//String folder = "/ServerPhp/index.php HTTP/1.1\r\n";
+			//String folder = "/~yarichard1/index.php HTTP/1.1\r\n"; //IUT 
+			String folder = "/ServerPhp/index.php HTTP/1.1\r\n";
 			builder.append("POST ").append(folder)
-//			.append("accept : text/text\n")
 			.append("Host :")
 			.append(Constants.ADDR_SERVER_PHP)
 			.append("\r\n")
