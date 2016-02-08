@@ -1,6 +1,3 @@
-# Reseau
-Projet Reseau Sockets Mini-Jeu de Mots
-
 ----------------------------------------
 
 Yannis RICHARD
@@ -74,3 +71,10 @@ Les classes ClientOld et ThreadOperationOld sont une nouvelle implémentation du
 systeme de menu plus simple pour l'utilisateur mais il fonctionne seulement avec les appels aux serveurs web
 nous n'avons pas eu le temps de corriger les erreurs pour le serveur Java.
 Le client C fonctionne également.
+Le Server SSL se lance correctement mais le client SSL renvoie une erreur qui provient d'un probléme ce certification
+d'après un post sur stackoverflow : 
+http://stackoverflow.com/questions/6353849/received-fatal-alert-handshake-failure-through-sslhandshakeexception
+Sinon l'implémentation du Client et Serveur SSL n'a pas d'erreur puisque nous avons repris notre code précédent
+que l'on a adapté au spéficité des socket SSL vu dans le cours.
+Pour les commandes SSL afin de créer les différents fichiers nous avons suivit ce que l'on a vu en TP et nous 
+l'avons récapitulé dans le fichier Note SSL.txt.
