@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server;
+package serveurssl;
 
 /**
  * @author yarichard1
@@ -15,6 +15,6 @@ public class ServerMain {
 	 */
 	public static void main(String[] args)
 	{
-		new Server(16000);
+		new ServerSSL(9999);
 	}
 }

@@ -10,6 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import constant.Constants;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 /**
  * @author Yannis
@@ -19,38 +21,46 @@ public class Client {
 
 	/** Le port de connexion du client. */
 	private int port;
-	
+	private int portC;
 	/**
 	 * Constructeur du client.
 	 * @param port Le port de connexion du client
 	 * @param adresse L'adresse de connexion du client
 	 */
-	public Client(int port, String adresse)
+	public Client(int port, int portC, String adresse)
 	{
 	    String ligne, result;
-    	StringBuilder builder;
-		PrintStream out = null;
-		this.port = port;
-        System.out.println("Lancement des operations :");
+            StringBuilder builder;
+            PrintStream out = null;
+            StringBuilder builderC;
+            PrintStream outC = null;
+            this.port = port;
+            this.portC = portC;
 	    try {
-    		Socket socket = new Socket(adresse, port);
+                    Socket socket = new Socket(adresse, port);
 		    BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
 	    	
 		    out = new PrintStream(socket.getOutputStream());
 		    BufferedReader keyboardSoc = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		    
 		    System.out.println(keyboardSoc.readLine());
-	        System.out.println("*********** En attente d'une opération **************");
-		    System.out.println("Commande -> Voyelle, Consonne, Caractere, Valeur, VoyelleSSL, ConsonneSSL Fin");
-		    System.out.println("Exemple  -> Voyelle : votre texte");
+                    System.out.println("********************** En attente d'une opération *************************");
+		    System.out.println("Commande -> Voyelle, Consonne, Caractere, Valeur, VoyelleC, ConsonneC, Fin");
+		    System.out.println("Exemple  -> Consonne : votre texte");
+                    System.out.println("Exemple  -> Caractere : votre texte");
+                    System.out.println("Exemple  -> Valeur : votre texte");
+                    System.out.println("Exemple  -> VoyelleC : votre texte");
+                    System.out.println("Exemple  -> ConsonneC : votre texte");
+                    System.out.println("***************************************************************************");
 		    System.out.println("\nCommande : ");
 		    
 			ligne = keyboard.readLine();
 		    while (!ligne.equals("Fin")) {
 		    	builder = new StringBuilder();
+		    	builderC = new StringBuilder();
 		    	if (ligne.contains("Consonne :") || ligne.contains("Voyelle :")) {
 				    out.println(ligne);
-				    result = keyboardSoc.readLine();
+    				    result = keyboardSoc.readLine();
 					builder.append(ligne).append("=").append(result).append("\n");
 				    builder.append("Autre operation :");
 				    System.out.println(builder.toString());
@@ -83,16 +93,34 @@ public class Client {
 				    System.out.println(builder.toString());
 				    */
 		    	}
-		    	else {
+		    	else if(ligne.contains("Caractere :") || ligne.contains("Valeur :")) {
 		    		if (ligne.contains("Caractere :")) {
 		    			caractere(ligne, builder);
-		    		}
+		    		}   
 		    		else {
 		    			if (ligne.contains("Valeur :")) {
 		    				valeur(ligne, builder);
 		    			}
 			    	}
-		    	}
+		    	}else if(ligne.contains("VoyelleC :") || ligne.contains("ConsonneC :")){// Serveur C
+                            Socket socketC = new Socket(adresse, portC);
+                            String split[] = ligne.split(" : ");
+                            String val;
+                            if(ligne.contains("VoyelleC :")){
+                                val = "3;"+split[1]; // voyelle
+                            }else{
+                                val = "4;"+split[1]; // consonne
+                            }
+                            outC = new PrintStream(socketC.getOutputStream());
+                            BufferedReader keyboardSocC = new BufferedReader(new InputStreamReader(socketC.getInputStream()));
+                            outC.println(val);
+                            outC.flush();
+                            result = keyboardSocC.readLine();
+                            builderC.append(ligne).append("=").append(result).append("\n");
+                            builderC.append("Autre operation :");
+                            System.out.println(builderC.toString()); // bloquage a cette ligne <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                            
+                        }
 			    ligne = keyboard.readLine();
 		    }
 	        System.out.println("------------- Fin --------------");
