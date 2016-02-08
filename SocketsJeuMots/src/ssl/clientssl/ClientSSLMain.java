@@ -20,7 +20,7 @@ public class ClientSSLMain {
 	 */
 	public static void main(String[] args) {
 		try {
-			new ClientSSL(14000, "127.0.0.1");
+			new ClientSSL(9999, "127.0.0.1");
 		} catch (IOException e) {
 			Logger.getLogger(ClientSSLMain.class.getName()).log(Level.SEVERE, null, e);
 		}

@@ -51,7 +51,7 @@ public class ClientSSL {
 			Reader socketReader = new InputStreamReader(sslsocket.getInputStream());
 			BufferedReader keyboardSoc = new BufferedReader(socketReader); 
 
-			System.out.println(keyboardSoc.readLine());
+			System.out.println(keyboardSoc.readLine().toString());
 			printMenu();
 			ligne = keyboard.readLine();
 			while (!ligne.equals("Fin")) {

@@ -1,9 +1,15 @@
 1ere étape : Création clé :
-$keytool - genkey -alias x -keystore y -keyobj RSA
+$keytool - genkey -alias x -keystore y -keyalg RSA
+$keytool -genkey -keystore mySrvKeystore -keyalg RSA
+Note : Le password est 123456.
+
 2eme étape : Réparation par la certification :
 $keytool -export -alias x -keystore x
+$keytool -export -keystore sTrust
+
 3eme étape : Autosigner
 $keytool -import -alias z -file z.cer -keystore b
+$keytool -import -file sCert.cer -keystore sTruststore
 
 Note : 
 x, y, z, b représente le nom des alias
@@ -13,12 +19,15 @@ b est le truststore client/publique. Faire un FTP pour récupérer le certificat
 Lorque l'on lance un programme on peut intégrer le keystore, et trustore dans le programme :
 Server :
 java -Djavax.net.url.keystore=y -Djavax.net.ssl.keyStorePassword= Lepassworddonné nom.programme
-Client :
-java -Djavax.net.url.truststore=b -Djavax.net.ssl.trustStorePassword= Lepassworddonné nom.programme
+java -Djavax.net.url.keystore=mySrvKeystore -Djavax.net.ssl.keyStorePassword=123456 D:\Yannis\Documents\Licence Pro 2\Reseau\SocketsJeuMots\bin\ssl\serverssl\ServerMain
 
-Comment repurer nom.programme :
+Client :
+java -Djavax.net.url.truststore=sTruststore -Djavax.net.ssl.trustStorePassword=123456 D:\Yannis\Documents\Licence Pro 2\Reseau\SocketsJeuMots\bin\ssl\clientssl\ClientMain
+
+Comment recuperer nom.programme :
 Aller dans worskpace/nomprojet/bin/
 Taper la commande java : nomdupackage/Server tester avant avec bin directement sinon probleme vient du package
 
 
 => http://stilius.net/java/java_ssl.php
+=> http://stackoverflow.com/questions/6353849/received-fatal-alert-handshake-failure-through-sslhandshakeexception
