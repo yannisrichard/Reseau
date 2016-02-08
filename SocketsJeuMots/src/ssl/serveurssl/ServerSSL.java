@@ -4,7 +4,6 @@
 package ssl.serveurssl;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +31,7 @@ public class ServerSSL {
 	{
 		try {
 			SSLServerSocketFactory sslserversocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
-			SSLServerSocket s = (SSLServerSocket) sslserversocketfactory.createServerSocket(port);
+			s = (SSLServerSocket) sslserversocketfactory.createServerSocket(port);
 
 			System.out.println("Socket serveur creee.");
 			waitClient();
@@ -52,10 +51,10 @@ public class ServerSSL {
 			System.out.println("Attente de clients.");
 			SSLSocket sslsocket;
 			try {
-				sslsocket = (SSLSocket) s.accept();
-				clientNumber ++;
-				new Thread(new ThreadOperationSSL(sslsocket, clientNumber)).start();
-				System.out.println("Connexion du client numero " + clientNumber);
+				sslsocket = (SSLSocket) this.s.accept();
+				this.clientNumber ++;
+				new Thread(new ThreadOperationSSL(sslsocket, this.clientNumber)).start();
+				System.out.println("Connexion du client numero " + this.clientNumber);
 			}
 			catch (IOException e){
 				System.out.println("Probleme de connexion avec le client.");
