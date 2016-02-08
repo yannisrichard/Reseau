@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server;
+package ssl.serveurssl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,12 +11,14 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.net.ssl.SSLSocket;
+
 /**
  * @author yarichard1
  *
  */
-public class ThreadOperation implements Runnable {
-	private Socket soc;
+public class ThreadOperationSSL implements Runnable {
+	private SSLSocket soc;
 	private BufferedReader client;
 	private PrintStream out;
 	private int clientNumber;
@@ -27,7 +29,7 @@ public class ThreadOperation implements Runnable {
 	 * @param socket 
 	 * 
 	 */
-	public ThreadOperation(Socket socket, int clientNumber) {
+	public ThreadOperationSSL(SSLSocket socket, int clientNumber) {
 		this.clientNumber = clientNumber;
 		try {
 			this.soc = socket;
@@ -35,7 +37,7 @@ public class ThreadOperation implements Runnable {
 			client = new BufferedReader(new InputStreamReader(soc.getInputStream()));
 		} 
 		catch (IOException e) {
-			Logger.getLogger(ThreadOperation.class.getName()).log(Level.SEVERE, null, e);
+			Logger.getLogger(ThreadOperationSSL.class.getName()).log(Level.SEVERE, null, e); 
 		}
 	}
 
@@ -72,7 +74,7 @@ public class ThreadOperation implements Runnable {
 
 		}
 		catch (IOException e) {
-			Logger.getLogger(ThreadOperation.class.getName()).log(Level.SEVERE, null, e);
+			Logger.getLogger(ThreadOperationSSL.class.getName()).log(Level.SEVERE, null, e);      
 		}
 		finally {
 			try {
@@ -81,7 +83,7 @@ public class ThreadOperation implements Runnable {
 				soc.close();
 			} 
 			catch (IOException e) {
-				Logger.getLogger(ThreadOperation.class.getName()).log(Level.SEVERE, null, e);
+				Logger.getLogger(ThreadOperationSSL.class.getName()).log(Level.SEVERE, null, e);    
 			}
 			finally {
 				System.out.println("Le client " + clientNumber + " s'est deconnecte.");

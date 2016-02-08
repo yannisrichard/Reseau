@@ -20,7 +20,6 @@ public class ClientMain {
      */
     public static void main(String[] args) {
 		new Client(16000, 15000, "127.0.0.1");
-
 //        try {
 //			new ClientOld(16000, 15000, "127.0.0.1");
 //		} catch (IOException ex) {
